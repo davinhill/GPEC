@@ -163,7 +163,6 @@ cython_debug/
 *.err
 *.out
 *.job
-*.jpg
 *.pyc
 *.pt
 *.h5
