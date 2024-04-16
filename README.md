@@ -8,7 +8,7 @@ Implementation of GPEC, a method of estimating uncertainty for explanations that
 
 ![Image](https://github.com/davinhill/GPEC/raw/main/Figures/fig1.jpg)
 
-For more details, please see the full manuscript:
+For more details, please see our full paper:
 
 **Boundary-Aware Uncertainty for Feature Attribution Explainers**  
 Davin Hill, Aria Masoomi, Max Torop, Sandesh Ghimire, Jennifer Dy  
@@ -16,17 +16,19 @@ Davin Hill, Aria Masoomi, Max Torop, Sandesh Ghimire, Jennifer Dy
 [[Paper]](https://arxiv.org/abs/2210.02419) [[Poster]](https://drive.google.com/file/d/1heCKUitA9mcXFK61565-a46xcKoZA8nh/view?usp=share_link)
 
 <!-- # Examples
-We have an [example implementation](https://github.com/davinhill/BivariateShapley/blob/main/Examples/example1_sentimentanalysis.ipynb) for a toy dataset, which can be run on Google Colab.
+We have an [example implementation](https://github.com/davinhill/BivariateShapley/blob/main/Examples/example1_sentimentanalysis.ipynb) for a toy dataset. -->
 
 # GPEC Visualization Tool
 
+The GPEC Visualizer is an interactive explanation of GPEC and the WEG Kernel. The tool lets you see how changing model complexity, number of DB samples, and $\lambda$ and $\rho$ values affect the GPEC uncertainty estimate.
+
 [[Visualizer]](https://gpec-demo.onrender.com) (Note: may take 3-5min to load)
 
-Alternatively, the source code is available in [./Plotly_visualization](https://github.com/davinhill/GPEC/tree/main/Plotly_visualization) and can be run locally using Plotly and Dash.
+Alternatively, the source code is available in the [Plotly_visualization](https://github.com/davinhill/GPEC/tree/main/Plotly_visualization) directory and can be run locally using Plotly and Dash.
 
 <img src="https://github.com/davinhill/GPEC/raw/main/Figures/plotly1.png" alt="GPEC Visualization: Decision Boundary" width="70%"/>
 <img src="https://github.com/davinhill/GPEC/raw/main/Figures/plotly2.png" alt="GPEC Visualization: WEG Kernel Similarity" width="70%"/>
- -->
+
 
 # Experiments
 
@@ -34,7 +36,7 @@ Below we detail the code used to evaluate GPEC, as described in the Experiments 
 
 
 **Datasets and Black-Box Models:**
-The black-box models evaluated in the experiments section are trained using the code in the [./Models/blackbox_model_training](https://github.com/davinhill/GPEC/tree/main/Tests/Models/blackbox_model_training) folder. Datasets are not included in the repository due to file size, however all datasets are publically available with sources listed in the paper supplement.
+The black-box models evaluated in the experiments section are trained using the code in the [Models/blackbox_model_training](https://github.com/davinhill/GPEC/tree/main/Tests/Models/blackbox_model_training) directory. Datasets are not included in the repository due to file size, however all datasets are publically available with sources listed in the paper supplement.
 
 **Uncertainty Visualization (Figure 4 and Figure 6):** [a_kernel_test_rev3.py](https://github.com/davinhill/GPEC/blob/main/Tests/uncertaintyfigure/a_kernel_test_rev3.py)
 
