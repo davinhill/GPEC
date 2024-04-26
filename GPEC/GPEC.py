@@ -15,10 +15,15 @@ from GPEC.utils import *
 
 
 class GPEC_Explainer():
+    '''
+    Wrapper function for GPEC explainer. Can be used to calculate explanations (KernelSHAP, LIME, Shapley Sampling, BayesSHAP, BayesLIME, CXPlain) and GPEC uncertainty estimates for a given blackbox model.
+
+    See README.md for more details.
+    '''
     def __init__(self,
         f_blackbox,
         x_train,
-        y_train,
+        y_train = None,
         explain_method = 'kernelshap',
         use_gpec = True,
         kernel = 'WEG',
@@ -29,7 +34,7 @@ class GPEC_Explainer():
         max_manifold_samples = None,
         gpec_lr = 0.1,
         gpec_iterations = 30,
-        use_labelnoise = False,
+        use_labelnoise = True,
         learn_addn_noise = False,
         n_labelnoise_samples = 10,
         labelnoise_var_weighting = 1,
@@ -47,6 +52,33 @@ class GPEC_Explainer():
         geo_matrix = None,
         **kwargs
         ):
+        '''
+        args:
+            f_blackbox (function): blackbox model to explain. Output must be numpy.
+            x_train (numpy matrix): training samples
+            y_train (optional, numpy matrix): training labels. Required when using certain explainers
+            explain_method (str): Explainer to use. Options: 'kernelshap', 'lime', 'shapleysampling', 'bayesshap', 'bayeslime', 'cxplain'. Default: 'kernelshap'. A custom explainer can by providing pre-calculated explanations using the tr_explanations argument.
+            use_gpec (bool): Whether to use GPEC. If False, only the explainer will be used.
+            kernel (str): Kernel to use for GPEC. Options: 'WEG' (Weighted Exponential Geodesic), 'RBF' (Radial Basis Function). Default: 'WEG'.
+            lam (float): GPEC parameter lambda. Default: 0.5.
+            rho (float): GPEC parameter rho. Default: 0.5.
+            kernel_normalization (bool): Whether to normalize the kernel similarity such that values are within [0,1] (Eq. 9 in manuscript). Default: True.
+            max_batch_size (int): The GP parametrizing GPEC must be trained over all features. This parameter specifies the maximum number of features to train over at once. Default: 1024.
+            gpec_lr (float): Learning rate for training GPEC. Default: 0.1.
+            gpec_iterations (int): Number of iterations for training GPEC. Default: 30.
+            use_labelnoise (bool): Whether to use label noise for GPEC. (Function approximation uncertainty in Eq. 1)
+            n_labelnoise_samples (int): If estimating label noise empirically (Eq. 3), specifies number of samples j to use. Default: 10.
+            scale_data (bool): Whether to scale the data using StandardScaler. Default: True.
+            calc_attr_during_pred (bool): Whether to calculate explanations during prediction (in addition to estimating uncertainty). Default: True.
+
+            n_mc_samples (int): Number of samples for BayesSHAP, BayesLIME, and Shapley Sampling estimation. If not specified, will be set to the default for each explainer.
+
+            tr_explanations (numpy matrix): Pre-calculated explanations for training samples.
+            tr_explanation_variance (numpy matrix): Pre-calculated explanation variance (i.e. function approximation uncertainty in Eq. 1).
+            manifold_samples (numpy matrix): Pre-calculated decision boundary samples.
+            geo_matrix (numpy matrix): Pre-calculated matrix of geodesic distances between the samples in manifold_samples. Calculated by running geo_matrix_kernel() in GPEC.decision_boundary.py on manifold_samples.
+
+        '''
 
         self.use_gpec = use_gpec
         self.lam = lam
@@ -148,7 +180,7 @@ class GPEC_Explainer():
 
                 # Function Approximation Uncertainty (Label Noise)
                 #--------------------------
-                min_var = np.zeros_like(tmp_y.cpu()) + 1e-4 # for numberical stability
+                min_var = np.zeros_like(tmp_y.cpu()) + 1e-4 # for numerical stability
                 if use_labelnoise == 1:
                     tmp_var_list = self.var_list_tr.transpose() * self.labelnoise_var_weighting
                     tmp_var_list = np.maximum(tmp_var_list, min_var)
