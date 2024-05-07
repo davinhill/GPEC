@@ -2,8 +2,6 @@
 
 Implementation of GPEC, a method of estimating uncertainty for explanations that can capture the decision boundary complexity of the black-box model.
 
-**UNDER CONSTRUCTION**: Will be updated by AISTATS 2024 (May 2024)
-
 <br />
 
 ![Image](https://github.com/davinhill/GPEC/raw/main/Figures/fig1.jpg)
